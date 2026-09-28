@@ -6,19 +6,11 @@ import os
 from pathlib import Path
 from functools import lru_cache
 from urllib.parse import quote
-import numpy as np
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from sqlalchemy import create_engine, event, func, select, text
 from sqlalchemy.orm import Session, joinedload
 from werkzeug.security import check_password_hash, generate_password_hash
-import rasterio
-from rasterio.mask import mask
-from rasterio.warp import transform_geom
-from shapely.geometry import shape
-from shapely.ops import transform as transform_shape
-from pyproj import Transformer
-
 from config import Config
 from models import Base, Basin, HydrologicalData, MeteorologicalData, Station
 
@@ -134,6 +126,14 @@ def rounded_value(value):
 
 
 def calculate_basin_parameters():
+    import numpy as np
+    import rasterio
+    from pyproj import Transformer
+    from rasterio.mask import mask
+    from rasterio.warp import transform_geom
+    from shapely.geometry import shape
+    from shapely.ops import transform as transform_shape
+
     geojson = load_geojson()
     if not geojson.get('features'):
         return {}
@@ -197,7 +197,10 @@ def update_basin_parameters():
         if all(getattr(basin, field) is not None for field in calculated_fields):
             return
 
-    parameters = calculate_basin_parameters()
+    try:
+        parameters = calculate_basin_parameters()
+    except ImportError:
+        return
     if not parameters:
         return
     with Session(engine) as session:
@@ -495,7 +498,8 @@ def basins():
 def hypsometric():
     payload = calculate_hypsometric()
     if 'error' in payload:
-        return jsonify(payload), payload.pop('_status', 500)
+        response = {key: value for key, value in payload.items() if key != '_status'}
+        return jsonify(response), payload.get('_status', 500)
     return jsonify(payload)
 
 
@@ -509,12 +513,19 @@ def calculate_hypsometric():
 
     geometry = features[0].get('geometry')
     try:
+        import numpy as np
+        import rasterio
+        from rasterio.mask import mask
+        from rasterio.warp import transform_geom
+
         with rasterio.open(RASTER_PATH) as raster:
             raster_geometry = transform_geom(
                 'EPSG:4326', raster.crs, geometry, precision=2
             )
             clipped, _ = mask(raster, [raster_geometry], crop=True, filled=False)
             elevations = clipped[0].compressed()
+    except ImportError as error:
+        return {'error': f'Falta una dependencia geoespacial en el entorno: {error}', '_status': 503}
     except (OSError, ValueError) as error:
         return {'error': f'No se pudo leer el raster: {error}', '_status': 500}
 

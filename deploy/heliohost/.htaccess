@@ -1,5 +1,0 @@
-Options +ExecCGI
-RewriteEngine On
-RewriteBase /
-RewriteRule ^(flask\.wsgi/.*)$ - [L]
-RewriteRule ^(.*)$ flask.wsgi/$1 [QSA,PT,L]

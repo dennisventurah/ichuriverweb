@@ -2,8 +2,8 @@
 
 Visualizador de datos meteorológicos e hidrológicos de la cuenca experimental del río Ichu.
 
-## HelioHost
+## PythonAnywhere
 
-La guía de instalación está en [README_HELIOHOST.md](README_HELIOHOST.md). Esta aplicación usa Flask mediante el WSGI de Plesk y almacena SQLite en un directorio privado configurado por `ICHU_DATA_DIR`.
+La guía de despliegue está en [README_PYTHONANYWHERE.md](README_PYTHONANYWHERE.md). La configuración WSGI de ejemplo está en `deploy/pythonanywhere/wsgi.py`.
 
-Antes de activarla, verifica que tu servidor tenga `SQLAlchemy`, `numpy`, `rasterio`, `pyproj` y `shapely`. HelioHost puede requerir que solicites módulos de Python nativos que no estén disponibles en el servidor.
+La aplicación guarda SQLite y la clave de sesión en un directorio privado configurado por `ICHU_DATA_DIR`; no coloques la base dentro del mapeo público `/static/`.
