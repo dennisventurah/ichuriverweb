@@ -5,7 +5,6 @@ from pathlib import Path
 # Clone the repository to ~/ichuriverweb on PythonAnywhere.
 PROJECT_HOME = Path.home() / 'ichuriverweb'
 PRIVATE_DATA_DIR = Path.home() / '.local' / 'share' / 'ichuriverweb'
-PRIVATE_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 # Keep the database and secrets outside the directory mapped to the website.
 os.environ.setdefault('ICHU_DATA_DIR', str(PRIVATE_DATA_DIR))

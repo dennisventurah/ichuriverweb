@@ -51,6 +51,17 @@ ADMIN_PASSWORD=reemplaza-por-una-contrasena-segura
 ```
 
 No subas este `.env` a GitHub ni lo guardes dentro de `static/` o del directorio público.
+La clave debe permanecer igual entre reinicios para que las sesiones de administrador sigan siendo válidas.
+
+Si el disco está lleno y no puedes crear `.env`, configura `SECRET_KEY`, `ADMIN_USER` y `ADMIN_PASSWORD` directamente en el archivo WSGI de PythonAnywhere, antes de `from app import app as application`. Por ejemplo:
+
+```python
+os.environ['SECRET_KEY'] = 'PEGA_AQUI_UN_SECRETO_ALEATORIO_LARGO'
+os.environ['ADMIN_USER'] = 'admin'
+os.environ['ADMIN_PASSWORD'] = 'PEGA_AQUI_UNA_CONTRASENA_SEGURA'
+```
+
+Genera una clave con `python -c "import secrets; print(secrets.token_urlsafe(48))"` y reemplaza ambos marcadores. No publiques esos valores en GitHub.
 
 La base se ubicará en:
 
@@ -59,6 +70,10 @@ La base se ubicará en:
 ```
 
 Si necesitas mantener los registros existentes, transfiere `ichu.db` local a esa ruta usando la pestaña **Files**. No está en Git porque se excluye mediante `.gitignore`. Conserva el archivo de la base y sus datos; al iniciar, la app aplica las migraciones compatibles.
+
+### Error `Disk quota exceeded`
+
+La aplicación no escribe una clave secreta al importar ni crea automáticamente el directorio de datos. Si aparece un error de cuota, libera espacio o amplía el almacenamiento antes de recargar: SQLite también necesita espacio libre para el WAL y para cualquier migración. Revisa el uso desde una consola Bash con `du -sh ~/* ~/.local/share/ichuriverweb` y conserva una copia de seguridad antes de borrar datos. No elimines `ichu.db` para solucionar el error.
 
 ## 4. Configurar la aplicación Web
 
