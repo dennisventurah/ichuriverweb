@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Base de datos local SQLite
+*.db
+*.db-wal
+*.db-shm
+
+# Entornos y secretos
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Herramientas del sistema
+.vscode/
+.DS_Store
+Thumbs.db

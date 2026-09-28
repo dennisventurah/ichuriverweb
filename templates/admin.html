@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Administración | Río Ichu{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block extra_scripts %}{% endblock %}
+
+{% block content %}
+<main class="admin-page">
+    <header class="admin-header">
+        <div>
+            <span class="eyebrow">Cuenca experimental</span>
+            <h1>Centro de datos</h1>
+            <p>Administra la información hidrológica y meteorológica.</p>
+        </div>
+        <a class="admin-button secondary" href="{{ url_for('admin_logout') }}">Cerrar sesión</a>
+    </header>
+
+    {% if message %}<div class="form-success">{{ message }}</div>{% endif %}
+    {% if error %}<div class="form-error">{{ error }}</div>{% endif %}
+
+    <section class="admin-grid">
+        <form class="admin-card" method="post">
+            <input type="hidden" name="action" value="basin">
+            <h2>Nueva cuenca</h2>
+            <div class="form-grid">
+                <div><label for="codigo_cuenca">Código</label><input id="codigo_cuenca" name="codigo_cuenca" required></div>
+                <div><label for="basin-name">Nombre</label><input id="basin-name" name="nombre" required></div>
+                <div><label>Área (km²)</label><input name="area_km2" type="number" step="any"></div>
+                <div><label>Perímetro (km)</label><input name="perimetro_km" type="number" step="any"></div>
+                <div><label>Densidad de drenaje</label><input name="densidad_drenaje" type="number" step="any"></div>
+                <div><label>Elevación mínima</label><input name="elevacion_minima" type="number" step="any"></div>
+                <div><label>Elevación máxima</label><input name="elevacion_maxima" type="number" step="any"></div>
+                <div><label>Elevación media</label><input name="elevacion_media" type="number" step="any"></div>
+                <div><label>Pendiente media</label><input name="pendiente_media" type="number" step="any"></div>
+                <div><label>Longitud de río (km)</label><input name="longitud_rio_km" type="number" step="any"></div>
+            </div>
+            <button class="admin-button" type="submit">Guardar cuenca</button>
+        </form>
+
+        <form class="admin-card" method="post">
+            <input type="hidden" name="action" value="station">
+            <h2>Nueva estación</h2>
+            <div class="form-grid">
+                <div><label>Código</label><input name="codigo_estacion" required></div>
+                <div><label>Nombre</label><input name="nombre" required></div>
+                <div class="full"><label>Cuenca</label><select name="cuenca_id" required>{% for basin in basins %}<option value="{{ basin.id }}">{{ basin.nombre }} ({{ basin.codigo_cuenca }})</option>{% endfor %}</select></div>
+                <div><label>Fecha de instalación</label><input name="fecha_instalacion" type="date"></div>
+                <div><label>Tipo</label><select name="tipo" required><option value="Meteorologica">Meteorológica</option><option value="Hidrologica">Hidrológica</option></select></div>
+                <div><label>Longitud</label><input name="longitud" type="number" step="any" required></div>
+                <div><label>Latitud</label><input name="latitud" type="number" step="any" required></div>
+                <div><label>Elevación (msnm)</label><input name="elevacion_msnm" type="number" step="any"></div>
+            </div>
+            <button class="admin-button" type="submit">Guardar estación</button>
+        </form>
+
+        <form class="admin-card" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="weather">
+            <h2>Cargar datos meteorológicos</h2>
+            <p class="hint">Formato compatible con <strong>hvca_cortado.txt</strong>. Se importan fecha, hora, temperatura exterior, humedad y lluvia.</p>
+            <label>Estación meteorológica</label>
+            <select name="station_id" required>{% for station in stations if station.tipo == 'Meteorologica' %}<option value="{{ station.id }}">{{ station.nombre }}</option>{% endfor %}</select>
+            <label>Archivo de texto</label><input name="data_file" type="file" accept=".txt,.csv" required>
+            <button class="admin-button" type="submit">Importar meteorología</button>
+        </form>
+
+        <form class="admin-card" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="hydrology">
+            <h2>Cargar datos hidrológicos</h2>
+            <p class="hint">CSV con tres columnas: <strong>fecha,hora,caudal</strong>. Ejemplo: 2026-01-01,08:00,4.25. Las filas con algún campo vacío se omiten.</p>
+            <label>Estación hidrológica</label>
+            <select name="station_id" required>{% for station in stations if station.tipo == 'Hidrologica' %}<option value="{{ station.id }}">{{ station.nombre }}</option>{% endfor %}</select>
+            <label>Archivo CSV</label><input name="data_file" type="file" accept=".csv,.txt" required>
+            <button class="admin-button" type="submit">Importar hidrología</button>
+        </form>
+    </section>
+</main>
+{% endblock %}

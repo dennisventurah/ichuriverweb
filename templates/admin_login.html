@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso administrativo | Río Ichu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+    <main class="login-shell">
+        <section class="login-card">
+            <span class="eyebrow">Cuenca experimental</span>
+            <h1>Acceso administrativo</h1>
+            <p>Gestiona cuencas, estaciones y registros ambientales.</p>
+            {% if error %}<div class="form-error">{{ error }}</div>{% endif %}
+            <form method="post">
+                <label for="username">Usuario</label>
+                <input id="username" name="username" type="text" autocomplete="username" required>
+                <label for="password">Contraseña</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required>
+                <button class="admin-button" type="submit">Ingresar</button>
+            </form>
+            <a class="back-link" href="{{ url_for('home') }}">Volver al mapa</a>
+        </section>
+    </main>
+</body>
+</html>

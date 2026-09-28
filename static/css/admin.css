@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Nunito+Sans:wght@400;600;700;800&display=swap');
+
+.admin-body {
+    min-height: 100vh;
+    overflow: auto;
+    background: #e7eee5;
+    color: #1d3028;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.login-shell {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: 24px;
+    background: radial-gradient(circle at 12% 15%, rgba(92, 143, 96, 0.2), transparent 32%), #e7eee5;
+}
+
+.login-card {
+    width: min(100%, 430px);
+    padding: 42px;
+    background: rgba(251, 250, 246, 0.94);
+    border: 1px solid rgba(40, 107, 75, 0.18);
+    box-shadow: 0 24px 60px rgba(29, 65, 45, 0.15);
+}
+
+.login-card h1,
+.admin-header h1,
+.admin-card h2 {
+    font-family: 'Bree Serif', serif;
+    font-weight: 400;
+}
+
+.login-card h1 {
+    margin: 6px 0 8px;
+    font-size: 2rem;
+}
+
+.login-card p,
+.admin-header p,
+.hint {
+    color: #60776a;
+}
+
+.login-card form {
+    margin-top: 28px;
+}
+
+.admin-button {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 12px 18px;
+    color: #fff;
+    border: 0;
+    background: #286b4b;
+    cursor: pointer;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.admin-button:hover,
+.admin-button:focus-visible {
+    background: #1d5039;
+}
+
+.admin-button.secondary {
+    margin-top: 0;
+    background: #e36b42;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 22px;
+    color: #286b4b;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.form-error,
+.form-success {
+    margin: 16px 0;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+}
+
+.form-error {
+    color: #8e3222;
+    background: #fbe4dd;
+}
+
+.form-success {
+    color: #205a3b;
+    background: #dff0df;
+}
+
+.admin-page {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 48px 0 70px;
+}
+
+.admin-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.admin-header h1 {
+    margin: 3px 0 5px;
+    font-size: 2.35rem;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.admin-card {
+    padding: 24px;
+    background: rgba(251, 250, 246, 0.9);
+    border: 1px solid rgba(40, 107, 75, 0.15);
+    box-shadow: 0 12px 30px rgba(29, 65, 45, 0.08);
+}
+
+.admin-card h2 {
+    margin: 0 0 18px;
+    color: #205239;
+    font-size: 1.45rem;
+}
+
+.admin-card label {
+    color: #496355;
+}
+
+.admin-card input,
+.admin-card select {
+    background: #fff;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 14px;
+}
+
+.form-grid .full {
+    grid-column: 1 / -1;
+}
+
+.hint {
+    min-height: 40px;
+    font-size: 0.87rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 760px) {
+    .admin-page {
+        width: min(100% - 28px, 560px);
+        padding: 28px 0 48px;
+    }
+
+    .admin-header,
+    .admin-grid {
+        display: block;
+    }
+
+    .admin-header .admin-button {
+        margin-top: 16px;
+    }
+
+    .admin-card {
+        margin-bottom: 16px;
+    }
+}

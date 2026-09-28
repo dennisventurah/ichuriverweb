@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Cuenca Experimental del Río Ichu{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <div>
+        <h1>Cuenca Experimental del Río Ichu</h1>
+        <p>Sistema de monitoreo meteorológico e hidrológico</p>
+    </div>
+    <button class="panel-toggle" id="open-sidebar" type="button" aria-controls="sidebar" aria-expanded="false">
+        <span aria-hidden="true">☰</span>
+        Panel de datos
+    </button>
+</header>
+
+<main class="dashboard" id="dashboard">
+
+    <section class="map-panel">
+        <div id="map"></div>
+    </section>
+
+    <aside class="sidebar" id="sidebar" aria-label="Panel de datos" aria-hidden="true">
+        <div class="sidebar-header">
+            <div>
+                <span class="eyebrow">Monitoreo</span>
+                <h2>Panel de datos</h2>
+            </div>
+            <button class="icon-button" id="close-sidebar" type="button" aria-label="Cerrar panel de datos" title="Cerrar panel">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+        <section class="card context-view station-view is-active" id="station-view">
+            <h3>Estación seleccionada</h3>
+
+            <div class="filters-grid">
+                <div>
+                    <label for="station-select">Estación</label>
+                    <select id="station-select">
+                        <option value="">Cargando estaciones...</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="variable">Variable</label>
+                    <select id="variable">
+                        <option value="precipitation">Precipitación</option>
+                        <option value="flow">Caudal</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="granularity">Ver por</label>
+                    <select id="granularity">
+                        <option value="day">Día</option>
+                        <option value="month">Mes</option>
+                        <option value="year">Año</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="start-date">Desde</label>
+                    <input type="date" id="start-date">
+                </div>
+
+                <div>
+                    <label for="end-date">Hasta</label>
+                    <input type="date" id="end-date">
+                </div>
+            </div>
+
+            <p id="station-name">Seleccione una estación en el mapa</p>
+            <p id="station-type"></p>
+            <p id="station-altitude"></p>
+
+            <button id="update-chart">
+                Actualizar gráfico
+            </button>
+        </section>
+
+        <section class="statistics-grid context-view station-view is-active">
+            <div class="stat-card">
+                <span>Mínimo</span>
+                <strong id="minimum">-</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>Máximo</span>
+                <strong id="maximum">-</strong>
+            </div>
+
+            <div class="stat-card">
+                <span id="mean-label">Media</span>
+                <strong id="mean">-</strong>
+            </div>
+        </section>
+
+        <section class="card chart-container context-view station-view is-active">
+            <h2>Comportamiento temporal <span id="chart-unit"></span></h2>
+            <canvas id="data-chart"></canvas>
+        </section>
+
+        <section class="card photo-card context-view station-view is-active" id="station-photos-section">
+            <div class="photo-card-header">
+                <h2>Registro fotográfico</h2>
+                <span id="photo-counter">Sin fotografías</span>
+            </div>
+            <div class="photo-carousel" id="photo-carousel">
+                <p class="photo-empty">No hay fotografías para esta estación.</p>
+            </div>
+            <div class="carousel-controls" id="carousel-controls" hidden>
+                <button class="carousel-button" id="previous-photo" type="button" aria-label="Fotografía anterior">‹</button>
+                <div class="carousel-dots" id="carousel-dots"></div>
+                <button class="carousel-button" id="next-photo" type="button" aria-label="Fotografía siguiente">›</button>
+            </div>
+        </section>
+
+        <section class="card context-view basin-view" id="basin-view">
+            <h2>Cuenca seleccionada</h2>
+
+            <div id="basin-parameters">
+                Seleccione una cuenca en el mapa.
+            </div>
+
+            <div class="basin-summary">
+                <span>Elevación mínima<strong id="basin-minimum">-</strong></span>
+                <span>Elevación media<strong id="basin-mean">-</strong></span>
+                <span>Elevación máxima<strong id="basin-maximum">-</strong></span>
+            </div>
+
+            <h3>Curva hipsométrica</h3>
+            <p class="chart-note">Área relativa acumulada respecto a la elevación.</p>
+            <div class="hypsometric-chart-wrap">
+                <canvas id="hypsometric-chart"></canvas>
+            </div>
+        </section>
+
+    </aside>
+
+    <div class="theme-control" aria-label="Configuración de apariencia">
+        <label for="theme-select">Apariencia</label>
+        <select id="theme-select">
+            <option value="system">Según el sistema</option>
+            <option value="light">Claro</option>
+            <option value="dark">Oscuro</option>
+        </select>
+    </div>
+
+    <div class="map-legend" aria-label="Leyenda del mapa">
+        <span class="legend-title">Leyenda</span>
+        <span class="legend-item"><i class="legend-swatch basin-swatch"></i> Cuenca</span>
+        <span class="legend-item"><i class="legend-swatch meteorological-swatch"></i> Estación meteorológica</span>
+        <span class="legend-item"><i class="legend-swatch hydrological-swatch"></i> Estación hidrológica</span>
+    </div>
+
+</main>
+{% endblock %}
